@@ -13,6 +13,48 @@
   </head>
   	<body>
         <div id="lugardetrabajo">
+          {{ nombre}}
+          <div class="ui form">
+            <div class="field">
+                        <label>User Input</label>
+                        <input type="text" v-model="libros[0].autor">
+                        <br>
+                        <h4>Agrega un libro</h4>
+                        <input type="text" id="title"  placeholder="Titulo"><br>
+                        <input type="text" id="author"  placeholder="Autor"><br>
+                        <input type="text" id="oferta"  placeholder="Oferta (si/no)"><br>
+                        <input type="text" id="editorial"  placeholder="Editorial"><br>
+                        <input type="number" id="cantidad"  placeholder="Cantidad">
+              </div>
+             </div>
+             <button class="ui button" v-on:click="metodo">
+                Otro libro
+             </button>
+          <li v-for="object in libros">
+            <ul>
+              <p v-bind:style="styleObject" v-if="object.oferta == 'si'" >
+                
+                Titiulo: 
+                {{object.titulo}}<br>
+                Autor: 
+                {{object.autor}}<br>
+                Editorial: 
+                {{object.editorial}}<br>
+                cantidad: 
+                {{object.cantidad}}<br>
+              </p>
+              <p v-else>
+                Titiulo: 
+                {{object.titulo}}<br>
+                Autor: 
+                {{object.autor}}<br>
+                Editorial: 
+                {{object.editorial}}<br>
+                cantidad: 
+                {{object.cantidad}}<br>
+              </p>
+            </ul>
+          </li>
         
         </div>
 
@@ -27,11 +69,52 @@
           //Una instancia de Vue que manejará esa área del documento #lugardetrabajo
           c= new Vue({
             el: "#lugardetrabajo",
+            methods:{
+            metodo: function(){
+              
+              var inName= document.getElementById("title").value;
+              var inAuth= document.getElementById("author").value;
+              var inOff= document.getElementById("oferta").value;
+              var inEdit= document.getElementById("editorial").value;
+              var inCant= document.getElementById("cantidad").value;
+              this.libros.push({titulo:inName,autor:inAuth,oferta:inOff,editorial:inEdit,cantidad:inCant})
+              
+            }
+          },
+          
             data :{
-              nombre: "La elegante vagancia"
+              styleObject: {
+            color:'rgb(240, 148, 28)'
+              },
+              nombre: "La elegante vagancia",
+              libros:[{
+                autor:"Ray Bradbury",
+                titulo:"Fahrenheit 451",
+                oferta:"no",
+                editorial:"planeta",
+                cantidad:10
+              },
+              {
+                autor:"Arthur C. Clarke",
+                titulo:"El fin de la infancia",
+                oferta:"si",
+                editorial:"penguin",
+                cantidad:1
+
+              },
+              {
+                autor:"Yuval Noah Harari",
+                titulo:"Sapiens",
+                oferta:"no",
+                editorial:"debate",
+                cantidad:6
+
+              }
+              ]
             }
             
           });
+          
 
 		  </script>
 	</body>
