@@ -17,10 +17,19 @@ type data struct {
 	data string `json: data`
 
 }
+type movie struct{
+  Titulo string `json: titulo`
+  Director string  `json: director`
+  Fecha int `json: fecha`
+}
 
 func mostrarHTML(w http.ResponseWriter, r *http.Request) {
   
    http.ServeFile(w, r, "ajax02.html")
+}
+func clientevue(w http.ResponseWriter, r *http.Request) {
+  
+  http.ServeFile(w, r, "vue01.html")
 }
 func cliente(w http.ResponseWriter, r *http.Request) {
   
@@ -49,6 +58,27 @@ func darMensaje(w http.ResponseWriter, r *http.Request) {
   //w.Header().Set("Content-Type", "application/json") 
 
      json.NewEncoder(w).Encode(libro)
+
+}
+func movies(w http.ResponseWriter, r *http.Request) {
+  pelis:=[3]movie{
+    movie {
+      Titulo: "V de venganza",
+      Director:  "James McTeigue",
+      Fecha: 2006,
+    },
+    movie {
+      Titulo: "Batman: el caballero de la noche",
+      Director:  "Christopher Nolan",
+      Fecha: 2008,
+    },
+    movie {
+      Titulo: "Joker",
+      Director:  "odd Phillips",
+      Fecha: 2019,
+    },
+  }
+     json.NewEncoder(w).Encode(pelis)
 
 }
 func reto1(w http.ResponseWriter, r *http.Request) {
@@ -111,6 +141,8 @@ func main() {
   http.HandleFunc("/reto2",reto2)
   http.HandleFunc("/cliente",cliente)
   http.HandleFunc("/cliente2",cliente2)
+  http.HandleFunc("/clienteVue",clientevue)
+  http.HandleFunc("/getMovies",movies)
   
   err := http.ListenAndServe("localhost"+":"+"8080", nil)
   if err != nil {

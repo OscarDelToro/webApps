@@ -3,6 +3,7 @@
     <meta charset="utf-8">
     <title>Vue Semestre i</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
    
     <style>
 
@@ -14,6 +15,10 @@
   	<body>
         <div id="lugardetrabajo">
           {{ nombre}}
+          <div id="abrema">
+            No se si abre mañana
+
+          </div>
           <div class="ui form">
             <div class="field">
                         <label>User Input</label>
@@ -30,7 +35,7 @@
              <button class="ui button" v-on:click="metodo">
                 Otro libro
              </button>
-          <li v-for="object in libros">
+          <li v-for="(object,i) in ordenarLibrosCantidad">
             <ul>
               <p v-bind:style="styleObject" v-if="object.oferta == 'si'" >
                 
@@ -42,6 +47,12 @@
                 {{object.editorial}}<br>
                 cantidad: 
                 {{object.cantidad}}<br>
+                <button class="ui button" v-on:click="borrar(i)">
+                  borrar
+               </button>
+               <button class="ui button" v-on:click="editar(i)">
+                editar
+             </button>
               </p>
               <p v-else>
                 Titiulo: 
@@ -52,11 +63,38 @@
                 {{object.editorial}}<br>
                 cantidad: 
                 {{object.cantidad}}<br>
+                <button class="ui button" v-on:click="borrar(i)">
+                  borrar
+               </button>
+               <button class="ui button" v-on:click="editar(i)">
+                editar
+             </button>
               </p>
             </ul>
           </li>
+
+          <div>
+            <h4> Peliculas: </h4>
+            <li v-for="object in peliculas">
+              <ul>
+                <p>
+                  
+                  Titiulo: 
+                  {{object.Titulo}}<br>
+                  Director: 
+                  {{object.Director}}<br>
+                  Año: 
+                  {{object.Fecha}}<br>
+
+                  
+                </p>
+              </ul>
+            </li>
+          </div>
+          
         
         </div>
+        
 
         <div id="espacio">
            espacio
@@ -70,6 +108,8 @@
           c= new Vue({
             el: "#lugardetrabajo",
             methods:{
+              
+
             metodo: function(){
               
               var inName= document.getElementById("title").value;
@@ -78,7 +118,74 @@
               var inEdit= document.getElementById("editorial").value;
               var inCant= document.getElementById("cantidad").value;
               this.libros.push({titulo:inName,autor:inAuth,oferta:inOff,editorial:inEdit,cantidad:inCant})
+              document.getElementById("title").value="";
+              document.getElementById("author").value="";
+              document.getElementById("oferta").value="";
+              document.getElementById("editorial").value="";
+              document.getElementById("cantidad").value="";
+            },
+            borrar: function(i){
+              this.libros.splice(i,1);
+
+            },
+            editar: function(i){
+              val = this.libros[i]
+              if(document.getElementById("title").value !="")
+                val.titulo=document.getElementById("title").value;
+              if(document.getElementById("author").value !="")
+                val.autor=document.getElementById("author").value;
+              if(document.getElementById("oferta").value !="")
+                val.oferta=document.getElementById("oferta").value;
+              if(document.getElementById("editorial").value !="")
+                val.editorial=document.getElementById("editorial").value;
+              if(document.getElementById("cantidad").value)
+                val.cantidad=document.getElementById("cantidad").value;
+
+              document.getElementById("title").value="";
+              document.getElementById("author").value="";
+              document.getElementById("oferta").value="";
+              document.getElementById("editorial").value="";
+              document.getElementById("cantidad").value="";
               
+              
+            }
+          },
+          computed:{
+              ordenarLibros: function(){
+                console.log("computed");
+                this.libros=_.orderBy(this.libros, ['autor'])
+               return this.libros
+              },
+              ordenarLibrosCantidad: function(){
+                console.log("computed");
+                this.libros=_.orderBy(this.libros, ['cantidad'])
+               return this.libros
+              }
+
+
+          },
+          watch:{
+            nombre: function(d){
+              console.log("nombre cambio a "+d);
+            },
+            abierto: function(d){
+              if(d){
+                document.body.style.backgroundColor = "white";
+          
+
+              }
+              else{
+                document.body.style.backgroundColor = "red";
+              }
+            },
+            abreManana: function(d){
+              if(d){
+                document.getElementById("abrema").innerHTML="Abre mañana"
+        
+              }
+              else{
+                document.getElementById("abrema").innerHTML="No abre mañana"
+              }
             }
           },
           
@@ -87,6 +194,9 @@
             color:'rgb(240, 148, 28)'
               },
               nombre: "La elegante vagancia",
+              abierto:true,
+              abreManana:true,
+              peliculas:[],
               libros:[{
                 autor:"Ray Bradbury",
                 titulo:"Fahrenheit 451",
@@ -111,6 +221,14 @@
 
               }
               ]
+            },
+            created(){
+                console.log ("instancia creada");
+                fetch("http://localhost:8080/getMovies")
+                .then(response => response.json())
+                .then(data => (this.peliculas=data,console.log(data)));
+                //.then(console.log(data));
+                //.then(data => (this.oferta = data.oferta));
             }
             
           });
