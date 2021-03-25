@@ -4,6 +4,7 @@
     <title>Vue Semestre i</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
    
     <style>
 
@@ -13,30 +14,36 @@
 
   </head>
   	<body>
-        <div id="lugardetrabajo">
+        <div id="lugardetrabajo" class="container-fluid">
           {{ nombre}}
           <div id="abrema">
             No se si abre mañana
 
           </div>
-          <div class="ui form">
-            <div class="field">
+          <div class="col-4">
+          <form class="row g-3">
+            
+              
                         <label>User Input</label>
                         <input type="text" v-model="libros[0].autor">
                         <br>
                         <h4>Agrega un libro</h4>
-                        <input type="text" id="title"  placeholder="Titulo"><br>
-                        <input type="text" id="author"  placeholder="Autor"><br>
-                        <input type="text" id="oferta"  placeholder="Oferta (si/no)"><br>
-                        <input type="text" id="editorial"  placeholder="Editorial"><br>
-                        <input type="number" id="cantidad"  placeholder="Cantidad">
-              </div>
-             </div>
-             <button class="ui button" v-on:click="metodo">
+                        <input type="text" id="title" class="form-control"  placeholder="Titulo"><br>
+                        <input type="text" id="author" class="form-control" placeholder="Autor"><br>
+                        <input type="text" id="oferta"  class="form-control" placeholder="Oferta (si/no)"><br>
+                        <input type="text" id="editorial" class="form-control"  placeholder="Editorial"><br>
+                        <input type="number" id="cantidad" class="form-control"  placeholder="Cantidad">
+                      
+              
+            
+             <button type="submit" class="btn btn-primary mb-3" v-on:click="metodo">
                 Otro libro
              </button>
-          <li v-for="(object,i) in ordenarLibrosCantidad">
-            <ul>
+            </form>
+          </div>
+          <div class="col-2">
+          <ul v-for="(object,i) in ordenarLibrosCantidad" class="list-group">
+            <li class="list-group-item">
               <p v-bind:style="styleObject" v-if="object.oferta == 'si'" >
                 
                 Titiulo: 
@@ -70,26 +77,30 @@
                 editar
              </button>
               </p>
-            </ul>
-          </li>
+            </li>
+          </ul>
+        </div>
 
-          <div>
+          <div class="col-3"> 
             <h4> Peliculas: </h4>
-            <li v-for="object in peliculas">
-              <ul>
-                <p>
-                  
-                  Titiulo: 
+            <ul v-for="object in peliculas" class="list-group">
+              <li  class="list-group-item">
+ 
+                <div class="card">
+                  <div class="card-body">
+                    Titiulo: 
                   {{object.Titulo}}<br>
                   Director: 
                   {{object.Director}}<br>
                   Año: 
                   {{object.Fecha}}<br>
+                  </div>
+                </div>
 
-                  
-                </p>
-              </ul>
             </li>
+
+            </ul>
+            
           </div>
           
         
