@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vue Semestre i</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+   
+    <style>
+
+    
+
+    </style>
+
+  </head>
+  	<body>
+        <div id="lugardetrabajo" class="container-fluid">
+            HOLA MUNDO!
+    
+        </div>
+		<script type="text/javascript">
+
+          //Una instancia de Vue que manejará esa área del documento #lugardetrabajo
+          c= new Vue({
+            el: "#lugardetrabajo",
+            
+            
+            methods:{
+              
+              fetchUses: function(){
+                console.log ("instancia creada");
+                  fetch("https://reqres.in/api/users?page=2",{ method: 'GET',
+                headers: {
+                }}
+                     )
+                .then(response => response.json())
+                .then(data => (this.uses = data.data)).then(data => (console.log(data)));
+            },
+              fetchNobel: function(){
+                console.log ("instancia creada");
+                  fetch("http://api.nobelprize.org/v1/prize.json?year=2020&yearTo=2020",{ method: 'GET',
+                headers: {
+                'Accept': '*/*',
+                'accept-encoding': 'gzip, deflate'
+                }}
+                     )
+                .then(response => response.json())
+                .then(data => (this.nobel = data.prizes)).then(data => (console.log(data)));
+            },
+            fetchSpotify: function(){
+                  fetch("https://api.spotify.com/v1/browse/categories",{ method: 'GET',
+                headers: {
+                }}
+                     )
+                .then(response => response.json())
+                .then(data => (this.datos = data.categories.items)).then(data => (console.log(data)));
+            },
+
+            metodo: function(){
+              
+              var inName= document.getElementById("title").value;
+              var inAuth= document.getElementById("author").value;
+              var inOff= document.getElementById("oferta").value;
+              var inEdit= document.getElementById("editorial").value;
+              var inCant= document.getElementById("cantidad").value;
+              this.libros.push({titulo:inName,autor:inAuth,oferta:inOff,editorial:inEdit,cantidad:inCant})
+              document.getElementById("title").value="";
+              document.getElementById("author").value="";
+              document.getElementById("oferta").value="";
+              document.getElementById("editorial").value="";
+              document.getElementById("cantidad").value="";
+            },
+            borrar: function(i){
+              this.libros.splice(i,1);
+
+            },
+            editar: function(i){
+              val = this.libros[i]
+              if(document.getElementById("title").value !="")
+                val.titulo=document.getElementById("title").value;
+              if(document.getElementById("author").value !="")
+                val.autor=document.getElementById("author").value;
+              if(document.getElementById("oferta").value !="")
+                val.oferta=document.getElementById("oferta").value;
+              if(document.getElementById("editorial").value !="")
+                val.editorial=document.getElementById("editorial").value;
+              if(document.getElementById("cantidad").value)
+                val.cantidad=document.getElementById("cantidad").value;
+
+              document.getElementById("title").value="";
+              document.getElementById("author").value="";
+              document.getElementById("oferta").value="";
+              document.getElementById("editorial").value="";
+              document.getElementById("cantidad").value="";
+              
+              
+            }
+          },
+          
+          
+          
+            data :{
+              
+            },
+            created(){
+                console.log ("instancia creada");
+
+                fetch("http://localhost:8080/getMovies")
+                .then(response => response.json())
+                .then(data => (this.peliculas=data,console.log(data)));
+                //.then(console.log(data));
+                //.then(data => (this.oferta = data.oferta));
+            }
+            
+          });
+          
+
+		  </script>
+	</body>
+</html>

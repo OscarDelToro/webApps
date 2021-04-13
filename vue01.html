@@ -102,6 +102,78 @@
             </ul>
             
           </div>
+
+          <div class="col-3"> 
+            <h4> categorías de Spotify: </h4>
+            <button class="ui button" v-on:click="fetchSpotify">
+              Cargar
+           </button>
+            <ul v-for="object in datos" class="list-group">
+              <li  class="list-group-item">
+ 
+                <div class="card">
+                  <div class="card-body">
+                  {{object.name}}<br>
+                  </div>
+                </div>
+
+            </li>
+
+            </ul>
+            
+          </div>
+
+          <div class="col-3"> 
+            <h4> Premios Nobel 2020: </h4>
+            <button class="ui button" v-on:click="fetchNobel">
+              Cargar
+           </button>
+            <ul v-for="object in nobel" class="list-group">
+              <li  class="list-group-item">
+ 
+                <div class="card">
+                  <div class="card-body">
+                    Category: 
+                  {{object.category}}<br>
+                  Laureates:<br>
+                  <ul v-for="pep in object.laureates" class="list-group">
+                    <li  class="list-group-item">
+                      {{pep.firstname}} {{pep.surname}}
+
+                    </li>
+
+                  </ul>
+
+                  </div>
+                </div>
+
+            </li>
+
+            </ul>
+            
+          </div>
+
+          <div class="col-3"> 
+            <h4> Sustituto de canciones: </h4>
+            <button class="ui button" v-on:click="fetchUses">
+              Cargar
+           </button>
+            <ul v-for="object in uses" class="list-group">
+              <li  class="list-group-item">
+ 
+                <div class="card">
+                  <div class="card-body">
+                   {{object.first_name}} {{object.last_name}} 
+                  
+
+                  </div>
+                </div>
+
+            </li>
+
+            </ul>
+            
+          </div>
           
         
         </div>
@@ -118,8 +190,38 @@
           //Una instancia de Vue que manejará esa área del documento #lugardetrabajo
           c= new Vue({
             el: "#lugardetrabajo",
+            
+            
             methods:{
               
+              fetchUses: function(){
+                console.log ("instancia creada");
+                  fetch("https://reqres.in/api/users?page=2",{ method: 'GET',
+                headers: {
+                }}
+                     )
+                .then(response => response.json())
+                .then(data => (this.uses = data.data)).then(data => (console.log(data)));
+            },
+              fetchNobel: function(){
+                console.log ("instancia creada");
+                  fetch("http://api.nobelprize.org/v1/prize.json?year=2020&yearTo=2020",{ method: 'GET',
+                headers: {
+                'Accept': '*/*',
+                'accept-encoding': 'gzip, deflate'
+                }}
+                     )
+                .then(response => response.json())
+                .then(data => (this.nobel = data.prizes)).then(data => (console.log(data)));
+            },
+            fetchSpotify: function(){
+                  fetch("https://api.spotify.com/v1/browse/categories",{ method: 'GET',
+                headers: {
+                }}
+                     )
+                .then(response => response.json())
+                .then(data => (this.datos = data.categories.items)).then(data => (console.log(data)));
+            },
 
             metodo: function(){
               
@@ -200,7 +302,11 @@
             }
           },
           
+          
             data :{
+              datos:{},
+              nobel:{},
+              uses:{},
               styleObject: {
             color:'rgb(240, 148, 28)'
               },
